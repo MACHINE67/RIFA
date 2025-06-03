@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rifa Solidaria - Sistema Interactivo</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+        
+        .header p {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+        
+        .cause-section {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            padding: 20px;
+            text-align: center;
+            color: #2c3e50;
+        }
+        
+        .cause-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #e74c3c;
+        }
+        
+        .cause-description {
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        
+        .prize-section {
+            padding: 25px 20px;
+            background: #f8f9fa;
+            text-align: center;
+        }
+        
+        .prize-image {
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+            border-radius: 15px;
+            margin: 0 auto 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3), inset 0 0 20px rgba(255,255,255,0.1);
+            border: 3px solid #ffd700;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .prize-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 30%, #444 2px, transparent 2px),
+                radial-gradient(circle at 60% 20%, #555 1.5px, transparent 1.5px),
+                radial-gradient(circle at 80% 50%, #666 2px, transparent 2px),
+                radial-gradient(circle at 30% 70%, #444 1.5px, transparent 1.5px),
+                radial-gradient(circle at 70% 80%, #555 2px, transparent 2px);
+            background-size: 40px 40px, 60px 60px, 50px 50px, 45px 45px, 55px 55px;
+            animation: shimmer 3s ease-in-out infinite;
+        }
+        
+        .prize-image::after {
+            content: '👜';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 50px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .info-item {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 10px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .info-label {
+            font-size: 10px;
+            opacity: 0.8;
+            margin-bottom: 5px;
+        }
+        
+        .info-value {
+            font-size: 14px;
+            font-weight: 700;
+        }
+        
+        .form-section {
+            padding: 25px 20px;
+            background: white;
+        }
+        
+        .form-title {
+            text-align: center;
+            font-size: 18px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #7f8c8d;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ecf0f1;
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+            transition: border-color 0.3s;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        
+        .ticket-info {
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .available-tickets {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+        
+        .ticket-selector {
+            background: white;
+            border: 2px solid #27ae60;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .ticket-selector h3 {
+            color: #2c3e50;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .ticket-grid-selector {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .ticket-option {
+            aspect-ratio: 1;
+            border: 2px solid #ecf0f1;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+            color: #2c3e50;
+        }
+        
+        .ticket-option:hover {
+            transform: scale(1.05);
+        }
+        
+        .ticket-option.available {
+            border-color: #27ae60;
+            background: #d5f4e6;
+        }
+        
+        .ticket-option.available:hover {
+            background: #27ae60;
+            color: white;
+        }
+        
+        .ticket-option.sold {
+            background: #ffeaea;
+            border-color: #e74c3c;
+            color: #e74c3c;
+            cursor: not-allowed;
+        }
+        
+        .ticket-option.selected {
+            background: #3498db;
+            border-color: #2980b9;
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .selected-ticket-info {
+            text-align: center;
+            padding: 10px;
+            background: #e8f4fd;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: none;
+        }
+        
+        .selected-ticket-info.show {
+            display: block;
+        }
+        
+        .selected-number {
+            font-size: 20px;
+            font-weight: 800;
+            color: #3498db;
+        }
+        
+        .buy-button {
+            width: 100%;
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            padding: 18px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .buy-button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .buy-button:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .receipt {
+            background: #f8f9fa;
+            border: 2px dashed #3498db;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .receipt-header {
+            text-align: center;
+            font-size: 16px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        .receipt-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .whatsapp-button {
+            width: 100%;
+            background: #25D366;
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background 0.3s;
+        }
+        
+        .whatsapp-button:hover {
+            background: #128C7E;
+        }
+        
+        .admin-panel {
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 15px;
+            display: none;
+        }
+        
+        .admin-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .sold-tickets {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .ticket-grid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 5px;
+            margin-top: 10px;
+        }
+        
+        .ticket-cell {
+            aspect-ratio: 1;
+            background: #34495e;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .ticket-cell:hover {
+            transform: scale(1.1);
+        }
+        
+        .ticket-cell.sold {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .ticket-cell.available {
+            background: #27ae60;
+            color: white;
+        }
+        
+        .admin-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #34495e;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+        }
+        
+        .admin-toggle:hover {
+            transform: scale(1.1);
+            background: #2c3e50;
+        }
+        
+        .reset-button {
+            width: 100%;
+            background: #e74c3c;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        
+        .reset-button:hover {
+            background: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎟️ RIFA SOLIDARIA</h1>
+            <p>¡Gana y ayuda al mismo tiempo!</p>
+        </div>
+        
+        <div class="cause-section">
+            <div class="cause-title">📣 "Ayúdanos a llevar el talento a lo más alto"</div>
+            <div class="cause-description">
+                ¡Tu compra hace la diferencia! Ayuda a una joven talentosa de Física a cumplir su sueño de competir en la <strong>fase nacional del Concurso Mexicano de Física 2025</strong>. ✨ ¡Cada boleto es una oportunidad de ganar y de cambiar una vida!
+            </div>
+        </div>
+        
+        <div class="prize-section">
+            <div class="prize-image"></div>
+            <div style="font-size: 16px; font-weight: 700; color: #2c3e50; margin-bottom: 5px;">🏆 Premio 1er lugar</div>
+            <div style="font-size: 14px; color: #7f8c8d;">✨ Mochila de lentejuelas negras</div>
+            
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">💰 Costo</div>
+                    <div class="info-value">$20</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">📅 Sorteo</div>
+                    <div class="info-value">08 JUN</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">🎫 Total</div>
+                    <div class="info-value">50</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <div class="form-title">🎫 Comprar Boleto</div>
+            
+            <div class="ticket-info">
+                <div class="available-tickets">Boletos disponibles: <span id="availableCount">50</span>/50</div>
+            </div>
+            
+            <div class="ticket-selector">
+                <h3>🎯 Elige tu número de la suerte</h3>
+                <div class="ticket-grid-selector" id="ticketGridSelector"></div>
+                <div class="selected-ticket-info" id="selectedTicketInfo">
+                    <div>✨ Has seleccionado el boleto #<span class="selected-number" id="selectedNumber">---</span></div>
+                </div>
+            </div>
+            
+            <form id="ticketForm">
+                <div class="form-group">
+                    <label class="form-label">👤 Nombre completo</label>
+                    <input type="text" class="form-input" id="buyerName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">📱 Teléfono</label>
+                    <input type="tel" class="form-input" id="buyerPhone" required>
+                </div>
+                
+                <button type="submit" class="buy-button" id="buyButton" disabled>
+                    🎟️ Selecciona un boleto primero
+                </button>
+            </form>
+            
+            <div class="receipt" id="receipt">
+                <div class="receipt-header">🎫 RECIBO OFICIAL</div>
+                <div class="receipt-item">
+                    <span><strong>Boleto #:</strong></span>
+                    <span id="receiptTicket"></span>
+                </div>
+                <div class="receipt-item">
+                    <span><strong>Comprador:</strong></span>
+                    <span id="receiptName"></span>
+                </div>
+                <div class="receipt-item">
+                    <span><strong>Teléfono:</strong></span>
+                    <span id="receiptPhone"></span>
+                </div>
+                <div class="receipt-item">
+                    <span><strong>Fecha:</strong></span>
+                    <span id="receiptDate"></span>
+                </div>
+                <div class="receipt-item">
+                    <span><strong>Monto:</strong></span>
+                    <span>$20.00</span>
+                </div>
+                <div style="text-align: center; margin-top: 15px; font-size: 12px; color: #7f8c8d;">
+                    ¡Gracias por tu apoyo! 💙<br>
+                    Contacto: Sergio E. Camaño - 777 5974371
+                </div>
+                
+                <button class="whatsapp-button" id="whatsappButton">
+                    📱 Enviar por WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="admin-panel" id="adminPanel">
+        <div class="admin-title">🔧 Panel de Control</div>
+        <div class="sold-tickets">
+            <div style="font-weight: 600; margin-bottom: 10px;">Boletos Vendidos: <span id="soldCount">0</span>/50</div>
+            <div style="font-size: 12px; margin-bottom: 10px;">🟢 Disponible | 🔴 Vendido</div>
+            <div class="ticket-grid" id="ticketGrid"></div>
+        </div>
+        <button class="reset-button" onclick="resetAllTickets()">
+            🗑️ Reiniciar Todos los Boletos
+        </button>
+    </div>
+    
+    <button class="admin-toggle" onclick="toggleAdmin()" title="Panel de Control">⚙️</button>
+
+    <script>
+        // Estado de los boletos (se guarda en memoria durante la sesión)
+        let ticketsSold = new Set();
+        let ticketData = {};
+        let selectedTicket = null;
+        
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTicketDisplay();
+            createTicketGrid();
+            createTicketSelector();
+        });
+        
+        // Crear selector de boletos para usuarios
+        function createTicketSelector() {
+            const grid = document.getElementById('ticketGridSelector');
+            grid.innerHTML = '';
+            
+            for (let i = 1; i <= 50; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'ticket-option';
+                cell.textContent = i;
+                cell.onclick = () => selectTicket(i);
+                grid.appendChild(cell);
+            }
+            updateTicketSelector();
+        }
+        
+        function updateTicketSelector() {
+            const cells = document.querySelectorAll('.ticket-option');
+            cells.forEach((cell, index) => {
+                const ticketNum = index + 1;
+                cell.className = 'ticket-option';
+                
+                if (ticketsSold.has(ticketNum)) {
+                    cell.classList.add('sold');
+                    cell.title = `Boleto #${ticketNum} - Ya vendido`;
+                } else {
+                    cell.classList.add('available');
+                    cell.title = `Boleto #${ticketNum} - Disponible`;
+                }
+                
+                if (selectedTicket === ticketNum) {
+                    cell.classList.add('selected');
+                }
+            });
+        }
+        
+        function selectTicket(ticketNum) {
+            if (ticketsSold.has(ticketNum)) {
+                alert(`El boleto #${ticketNum} ya está vendido. Por favor elige otro número.`);
+                return;
+            }
+            
+            selectedTicket = ticketNum;
+            updateTicketSelector();
+            
+            // Mostrar información del boleto seleccionado
+            document.getElementById('selectedNumber').textContent = String(ticketNum).padStart(3, '0');
+            document.getElementById('selectedTicketInfo').classList.add('show');
+            
+            // Habilitar botón de compra
+            const buyButton = document.getElementById('buyButton');
+            buyButton.disabled = false;
+            buyButton.textContent = `🎟️ Comprar Boleto #${String(ticketNum).padStart(3, '0')} - $20`;
+        }
+        
+        // Formulario de compra
+        document.getElementById('ticketForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('buyerName').value.trim();
+            const phone = document.getElementById('buyerPhone').value.trim();
+            
+            if (!name || !phone) {
+                alert('Por favor completa todos los campos');
+                return;
+            }
+            
+            if (!selectedTicket) {
+                alert('Por favor selecciona un boleto');
+                return;
+            }
+            
+            if (ticketsSold.has(selectedTicket)) {
+                alert('Este boleto ya no está disponible. Por favor selecciona otro.');
+                selectedTicket = null;
+                updateTicketSelector();
+                return;
+            }
+            
+            // Marcar boleto como vendido
+            ticketsSold.add(selectedTicket);
+            ticketData[selectedTicket] = {
+                name: name,
+                phone: phone,
+                date: new Date().toLocaleDateString('es-MX'),
+                time: new Date().toLocaleTimeString('es-MX')
+            };
+            
+            // Mostrar recibo
+            showReceipt(selectedTicket, name, phone);
+            
+            // Actualizar displays
+            updateTicketDisplay();
+            updateTicketGrid();
+            updateTicketSelector();
+            
+            // Limpiar formulario y selección
+            this.reset();
+            selectedTicket = null;
+            document.getElementById('selectedTicketInfo').classList.remove('show');
+            const buyButton = document.getElementById('buyButton');
+            buyButton.disabled = true;
+            buyButton.textContent = '🎟️ Selecciona un boleto primero';
+        });
+        
+        function updateTicketDisplay() {
+            const available = 50 - ticketsSold.size;
+            
+            document.getElementById('availableCount').textContent = available;
+            document.getElementById('soldCount').textContent = ticketsSold.size;
+            
+            // Si no hay boletos disponibles, deshabilitar selector
+            if (available === 0) {
+                const buyButton = document.getElementById('buyButton');
+                buyButton.disabled = true;
+                buyButton.textContent = '🚫 Todos los boletos están vendidos';
+                
+                // Ocultar selector si no hay boletos
+                const selector = document.querySelector('.ticket-selector h3');
+                if (selector) {
+                    selector.textContent = '🚫 Todos los boletos han sido vendidos';
+                }
+            }
+        }
+        
+        function showReceipt(ticketNumber, name, phone) {
+            document.getElementById('receiptTicket').textContent = String(ticketNumber).padStart(3, '0');
+            document.getElementById('receiptName').textContent = name;
+            document.getElementById('receiptPhone').textContent = phone;
+            document.getElementById('receiptDate').textContent = new Date().toLocaleDateString('es-MX');
+            
+            document.getElementById('receipt').style.display = 'block';
+            document.getElementById('receipt').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // WhatsApp
+        document.getElementById('whatsappButton').addEventListener('click', function() {
+            const ticketNumber = document.getElementById('receiptTicket').textContent;
+            const name = document.getElementById('receiptName').textContent;
+            const phone = document.getElementById('receiptPhone').textContent;
+            const date = document.getElementById('receiptDate').textContent;
+            
+            const message = `🎟️ *COMPRA DE BOLETO - RIFA SOLIDARIA*\n\n` +
+                          `📋 *DATOS DE COMPRA:*\n` +
+                          `🎫 Boleto #: ${ticketNumber}\n` +
+                          `👤 Comprador: ${name}\n` +
+                          `📱 Teléfono: ${phone}\n` +
+                          `📅 Fecha: ${date}\n` +
+                          `💰 Monto: $20.00\n\n` +
+                          `🎯 *CAUSA:* Apoyo para fase nacional del Concurso Mexicano de Física 2025\n` +
+                          `🏆 *PREMIO:* Mochila de lentejuelas negras\n` +
+                          `📅 *SORTEO:* 08 de junio 2025\n\n` +
+                          `¡Gracias por tu apoyo! 💙`;
+            
+            const whatsappUrl = `https://wa.me/7775974371?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        });
+        
+        // Panel de administración
+        function toggleAdmin() {
+            const panel = document.getElementById('adminPanel');
+            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+        }
+        
+        function createTicketGrid() {
+            const grid = document.getElementById('ticketGrid');
+            grid.innerHTML = '';
+            
+            for (let i = 1; i <= 50; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'ticket-cell';
+                cell.textContent = i;
+                cell.onclick = () => toggleTicket(i, cell);
+                grid.appendChild(cell);
+            }
+            updateTicketGrid();
+        }
+        
+        function updateTicketGrid() {
+            const cells = document.querySelectorAll('.ticket-cell');
+            cells.forEach((cell, index) => {
+                const ticketNum = index + 1;
+                cell.className = 'ticket-cell ' + (ticketsSold.has(ticketNum) ? 'sold' : 'available');
+                if (ticketsSold.has(ticketNum) && ticketData[ticketNum]) {
+                    cell.title = `Vendido a: ${ticketData[ticketNum].name}`;
+                }
+            });
+        }
+        
+        function toggleTicket(ticketNum, cell) {
+            if (ticketsSold.has(ticketNum)) {
+                if (confirm(`¿Marcar boleto #${ticketNum} como disponible?`)) {
+                    ticketsSold.delete(ticketNum);
+                    delete ticketData[ticketNum];
+                }
+            } else {
+                const name = prompt('Nombre del comprador:');
+                if (name) {
+                    const phone = prompt('Teléfono del comprador:') || '';
+                    ticketsSold.add(ticketNum);
+                    ticketData[ticketNum] = {
+                        name: name,
+                        phone: phone,
+                        date: new Date().toLocaleDateString('es-MX')
+                    };
+                }
+            }
+            updateTicketDisplay();
+            updateTicketGrid();
+        }
+        
+        function resetAllTickets() {
+            if (confirm('¿Estás seguro de que quieres reiniciar TODOS los boletos? Esta acción no se puede deshacer.')) {
+                ticketsSold.clear();
+                ticketData = {};
+                selectedTicket = null;
+                updateTicketDisplay();
+                updateTicketGrid();
+                updateTicketSelector();
+                document.getElementById('receipt').style.display = 'none';
+                document.getElementById('selectedTicketInfo').classList.remove('show');
+                
+                const buyButton = document.getElementById('buyButton');
+                buyButton.disabled = true;
+                buyButton.textContent = '🎟️ Selecciona un boleto primero';
+                
+                // Restaurar título del selector
+                const selector = document.querySelector('.ticket-selector h3');
+                if (selector) {
+                    selector.textContent = '🎯 Elige tu número de la suerte';
+                }
+            }
+        }
+    </script>
+</body>
+</html>
